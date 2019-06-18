@@ -1,0 +1,56 @@
+- content_for :head
+  = javascript_include_tag 'routes'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Маршруты
+section.section
+  .container
+    - if user_signed_in? && current_user.admin?
+      .row
+        .col-lg-12
+          div.d-flex.justify-content-end.add-btn
+            a.text-white.add-button href="#{new_route_path}"
+              i.fa.fa-plus-circle Добавить маршрут
+    .row
+      .col-lg-12
+        table#routes-table.table.data-table.dashboard-container
+          thead
+            tr
+              th Маршрут
+              th Дата отправления
+              th Дата прибытия
+              th Осталось мест
+              th Стоимость сидячего места
+              th Стоимость плацкарта
+              th Стоимость купе
+              th Действия
+          - @routes.each do |route|
+            tr
+              td = route.route_text
+              td = route.start_time
+              td = route.finish_time
+              td = route.available_seats
+              td = route.seat_price
+              td = route.second_place_price
+              td = route.coupe_price
+              td
+                - if route.start_time < DateTime.now
+                  | Поезд уже ушел
+                - elsif route.available_seats < 1
+                  | Нет мест
+                - elsif !user_signed_in? || user_signed_in? && !current_user.admin?
+                  ul.list-inline.justify-content-center
+                    li.list-inline-item
+                      a.buy-ticket.action data-toggle="tooltip" data-placement="top" title="" href="#{new_ticket_path(route_id: route)}" data-original-title="Купить билет"
+                        i.fa.fa-ticket
+                - if user_signed_in? && current_user.admin?
+                  ul.list-inline.justify-content-center
+                    li.list-inline-item
+                      a.edit.action data-toggle="tooltip" data-placement="top" title="" href="#{edit_route_path(route)}" data-original-title="Изменить"
+                        i.fa.fa-pencil
+                    li.list-inline-item
+                      a.delete.action data-toggle="tooltip" data-placement="top" title="" href="#{route_path(route)}" data-original-title="Удалить" data-method="delete"
+                        i.fa.fa-trash

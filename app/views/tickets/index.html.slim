@@ -1,0 +1,48 @@
+- content_for :head
+  = javascript_include_tag 'tickets'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Билеты
+section.section
+  .container
+    .row
+      .col-lg-12
+        table#tickets-table.table.data-table.dashboard-container
+          thead
+            tr
+              th Название маршрута
+              th Дата отправления
+              th Дата прибытия
+              th Тип места
+              th Стоимость
+              th Email покупателя
+              th Телефон
+              - unless current_user.admin?
+                th Действия
+          - @tickets.each do |ticket|
+            tr
+              td = ticket.route.name
+              td = ticket.route.start_time
+              td = ticket.route.finish_time
+              td = Route.seats_type_to_text(ticket.seats_type)
+              td = ticket.route.send("#{ticket.seats_type}_price")
+              td = ticket.user.email
+              td = ticket.user.phone_number
+              - unless current_user.admin?
+                td
+                  ul.list-inline.justify-content-center
+                    li.list-inline-item
+                      a.delete.action data-toggle="tooltip" data-placement="top" title="" href="#{ticket_path(ticket)}" data-original-title="Вернуть билет" data-method="delete" data-confirm="Вы точно хотите вернуть билет? Стоимость будет возвращена вам на карту"
+                        i.fa.fa-times-circle
+          tfoot
+            th
+            th
+            th
+            th
+            th
+            th
+            - unless current_user.admin?
+              th

@@ -1,0 +1,44 @@
+- content_for :head
+  = javascript_include_tag 'trains'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 = @train.new_record? ? 'Добавить поезд' : 'Изменить поезд'
+section.section
+  .container
+    .row
+      .col-md-6.offset-md-3
+        form action="#{admin_trains_path}" method="POST"
+        = form_tag((@train.new_record? ? admin_trains_path : admin_train_path), method: (@train.new_record? ? 'POST' : 'PATCH')) do
+          fieldset.p-4
+            .form-group
+              label for="name" Название
+              input.form-control#name placeholder="Название" required="" type="text" name="train[name]" value="#{@train.name}"
+            .form-group
+              label for="train_type" Тип поезда
+              select#train_type name="train[train_type]" placeholder="Куда" required="" value="#{@train.train_type}"
+                option value="Скорый поезд" Скорый поезд
+                option value="Пассажирский поезд" Пассажирский поезд
+            .form-group
+              label for="seat_capacity" Кол-во сидячих мест
+              input.form-control#seat_capacity placeholder="Кол-во сидячих мест" required="" type="number" min="0" title=">0" name="train[seat_capacity]" value="#{@train.seat_capacity}"
+            .form-group
+              label for="second_place_capacity" Кол-во плацкарт мест
+              input.form-control#second_place_capacity placeholder="Кол-во мест купе" required="" type="number" min="0" title=">0" name="train[second_place_capacity]" value="#{@train.second_place_capacity}"
+            .form-group
+              label for="coupe_capacity" Кол-во купе мест
+              input.form-control#coupe_capacity placeholder="Кол-во сидячих мест" required="" type="number" min="0" title=">0" name="train[coupe_capacity]" value="#{@train.coupe_capacity}"
+            .form-group
+              label for="railway_stations" Станции
+              input#railway_stations_true type="hidden" name="train[railway_stations]"
+              select#railway_stations multiple="multiple" name="train[railway_station_ids][]" data-railway-stations="#{@train.railway_stations_trains.to_json}"
+                option value="" hidden="" disabled="" selected="" Выберите станции
+                - RailwayStation.all.each do |station|
+                  option value="#{station.id}" = station.title
+            .form-group
+              - if @train.errors.any?
+                small.text-danger = @train.errors.messages.values.flatten.join("\n")
+            .btn-group
+              button.btn.btn-primary.mt-2.float-right type="submit" Далее

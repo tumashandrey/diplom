@@ -1,0 +1,101 @@
+- content_for :head
+  = javascript_include_tag 'searches'
+
+section.hero-area.bg-1.text-center.overly
+  .container
+    .row
+      .col-md-12
+        /! Header Contetnt
+        .content-block
+          h1 Купите билет за несколько действий
+          p
+            | Выберите интересующий вас маршрут и дату поездки
+        /! Advance Search
+        .advance-search
+          .container
+            .row.justify-content-center
+              .col-lg-12.col-md-12.align-content-center
+                form  action="#{routes_path}" method="GET"
+                  .form-row
+                    .form-group.col-md-4
+                      select#input-from.form-control.my-2.my-lg-1 name="routes_filter[from]" placeholder="Откуда" required=""
+                        - RailwayStation.order('title').all.each do |station|
+                          option value="#{station.id}" = station.title
+                    .form-group.col-md-3
+                      select#input-to.form-control.my-2.my-lg-1 name="routes_filter[to]" placeholder="Куда" required=""
+                        - RailwayStation.order('title').all.each do |station|
+                          option value="#{station.id}" = station.title
+                    .form-group.col-md-3
+                      input#input-date.form-control.my-2.my-lg-1.form-control placeholder="Дата" type="text" autocomplete="off" required="" name="routes_filter[date]"
+                    .form-group.col-md-2.align-self-center
+                      button.btn.btn-primary type="submit"  Поиск
+section.popular-deals.section.bg-gray
+  .container
+    .row
+      .col-md-12
+        h2 style='font-size: 30px; letter-spacing: 0.05em; text-align: center; margin-bottom: 75px;' Расписание поездов Белорусской железной дороги
+        p style='margin-bottom: 75px;'
+          | Наш сервис предоставляет полное расписание поездов Белорусских железных дорог, список станций, отображение маршрута следования на карте и покупку билетов жд онлайн не выходя из дома. Экономьте ваше время на телефонных звонках в справочную и очередях в кассы — пользуйтесь удобным расписанием поездов, рассчитывайте стоимость и покупайте билеты на все маршруты Белорусской железной дороги на нашем сайте. Система поиска предложит вам все актуальные варианты проезда, точное расписание поездов и выгодную стоимость жд билетов.
+    .row
+      .col-md-12
+        .section-title
+          h2 class='text-center' 5 причин купить билеты именно у нас
+    .row
+      /! offer 01
+      .col-lg-12
+        .trending-ads-slide
+          .col-sm-12.col-lg-4
+            /! product card
+            .product-item.bg-light
+              .card
+                .thumb-content
+                  a
+                    img.card-img-top.img-fluid style='height: 200px;' alt=('') src="assets/products/products-1.jpg" /
+                .card-body
+                  h4.card-title
+                    a Купите билет за 4 минуты
+                  p.card-text Выберите подходящий транспорт, укажите пассажиров и оплатите билет
+          .col-sm-12.col-lg-4
+            /! product card
+            .product-item.bg-light
+              .card
+                .thumb-content
+                  a
+                    img.card-img-top.img-fluid style='height: 200px;' alt=("Card image cap") src="assets/products/products-2.jpg" /
+                .card-body
+                  h4.card-title
+                    a Выбирайте места на схеме
+                  p.card-text Знаем, как расположены места в поездах, в которых вы собираетесь совершить свою поездку
+          .col-sm-12.col-lg-4
+            /! product card
+            .product-item.bg-light
+              .card
+                .thumb-content
+                  a
+                    img.card-img-top.img-fluid style='height: 200px;' alt=("Card image cap") src="assets/products/products-3.jpg" /
+                .card-body
+                  h4.card-title
+                    a Расписание автобусов по Беларуси, России и Европе
+                  p.card-text 20 000 направлений, которые постоянно обновляются
+          .col-sm-12.col-lg-4
+            /! product card
+            .product-item.bg-light
+              .card
+                .thumb-content
+                  a
+                    img.card-img-top.img-fluid style='height: 200px;' alt=("Card image cap") src="assets/products/products-4.jpg" /
+                .card-body
+                  h4.card-title
+                    a Получите ж/д билет без очереди в любой кассе Беларуси
+                  p.card-text Все что нужно — номера заказа и паспорт
+          .col-sm-12.col-lg-4
+            /! product card
+            .product-item.bg-light
+              .card
+                .thumb-content
+                  a
+                    img.card-img-top.img-fluid style='height: 200px;' alt=("Card image cap") src="assets/products/products-5.jpg" /
+                .card-body
+                  h4.card-title
+                    a Лучшие предложения 320 маршрутов
+                  p.card-text Никаких доплат после покупки: в стоимость билетов включены все сборы

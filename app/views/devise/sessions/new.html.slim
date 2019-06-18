@@ -1,0 +1,24 @@
+section.login.py-5.border-top-1
+  .container
+    .row.justify-content-center
+      .col-lg-5.col-md-8.align-item-center
+        .border
+          h3.bg-gray.p-4 Войти
+          form action="#{session_path(resource_name)}" method="POST"
+            fieldset.p-4
+              input.border.p-3.w-100.my-2 placeholder="email" name="user[email]" type="email" required=''
+              small class="text-danger #{@user && @user.errors[:name].empty? ? 'd-none' : ''}"
+                | #{@user.errors[:name].join("\n") rescue ''}
+              input.border.p-3.w-100.my-2 placeholder="пароль" type="password" name="user[password]" minlength="8" required=''
+              small class="text-danger #{@user && @user.errors[:password].empty? ? 'd-none' : ''}"
+                | #{@user.errors[:password].join("\n") rescue ''}
+              input type="hidden" name="authenticity_token" value="#{form_authenticity_token}"
+              small class="text-danger #{@user && @user.errors[:password].empty? ? 'd-none' : ''}"
+              - if @user && @user.errors.reject {|key, message| [:name, :password].include?(key)}.any?
+                small class="text-danger"
+                  | "#{@user.errors.reject {|key, message| [:name, :password].include?(key)}.values.join("\n") rescue ''}
+              - if flash && flash.alert
+                small class="text-danger"
+                  | #{flash.alert rescue ''}
+
+              button.d-block.py-3.px-5.bg-primary.text-white.border-0.rounded.font-weight-bold.mt-3 type="submit"  Войти

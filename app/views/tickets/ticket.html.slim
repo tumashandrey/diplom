@@ -1,0 +1,44 @@
+- content_for :head
+  = javascript_include_tag 'tickets'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Купить билет
+section.section
+  .container
+    .row
+      .col-md-6.offset-md-3
+        = form_tag(tickets_path, method: 'POST') do
+          fieldset.p-4
+            .form-group
+              input type="hidden" name="ticket[route_id]" value="#{@ticket.route.id}" required=""
+              input type="hidden" name="ticket[user_id]" value="#{current_user.id}" required=""
+            .form-group
+              label for="card_number" Данные карты
+              input.form-control#card_number placeholder="Данные карты" required="" type="text" name="card_number" pattern="\d{4}-\d{4}-\d{4}-\d{4}" title="Формат xxxx-xxxx-xxxx-xxxx"
+            .form-group
+              label for="card_cvc" CVC
+              input.form-control#card_cvc name="card_cvc" placeholder="CVC код" required="" type="text" pattern="\d{3}" title="3 цифры"
+            .form-group
+              label for="seats_type" Кол-во мест
+              select#seats_type name="ticket[seats_type]" placeholder="Тип места" required="" value="#{@ticket.seats_type}"
+                option selected="selected" disabled="true" Выберите тип места
+                - if @ticket.route.seats_available?('seat')
+                  option value="seat" Сидячее место
+                - else
+                  option value="seat" disabled="" Сидячее место
+                - if @ticket.route.seats_available?('second_place')
+                  option value="second_place" Плацкарт
+                - else
+                  option value="second_place" disabled="" Плацкарт
+                - if @ticket.route.seats_available?('coupe')
+                  option value="coupe" Купе
+                - else
+                  option value="coupe" disabled+="" Купе
+            .form-group
+              - if @ticket.errors.any?
+                small.text-danger = @ticket.errors.messages.values.flatten.join("\n")
+            .btn-group
+              button.btn.btn-primary.mt-2.float-right type="submit" data-method="patch" Купить

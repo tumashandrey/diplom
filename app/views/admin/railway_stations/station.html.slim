@@ -1,0 +1,24 @@
+- content_for :head
+  = javascript_include_tag 'railway_stations'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Добавить станцию
+section.section
+  .container
+    .row
+      .col-md-6.offset-md-3
+        = form_tag((@railway_station.new_record? ? admin_railway_stations_path : admin_railway_station_path), method: (@railway_station.new_record? ? 'POST' : 'PATCH')) do
+          fieldset.p-4
+            - unless @railway_station.new_record?
+              input type="hidden" name="railway_station[id]" value="#{@railway_station.id}"
+            .form-group
+              label for="name" Имя
+              input.form-control#name placeholder=("Имя") required="" type="text" name="railway_station[title]" value="#{@railway_station.title}"
+            .form-group
+              - if @railway_station.errors.any?
+                small.text-danger = @railway_station.errors.messages.values.flatten.join("\n")
+            .btn-group
+              button.btn.btn-primary.mt-2.float-right type="submit" data-method="patch" = @railway_station.new_record? ? 'Создать' : 'Изменить'

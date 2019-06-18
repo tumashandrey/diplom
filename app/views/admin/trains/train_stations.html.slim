@@ -1,0 +1,32 @@
+- content_for :head
+  = javascript_include_tag 'trains'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Станции поезда
+section.section
+  .container
+    - @train.railway_stations_trains.sort_by { |station| station.position.to_i } .each do |railway_stations_train|
+      .row
+        .col-md-6.offset-md-3
+          = form_tag(update_trains_station_admin_train_path(@train), method: 'PATCH') do
+            fieldset.p-4
+              h3 = railway_stations_train.railway_station.title
+              .form-group
+                input type="hidden" name="railway_stations_train[id]" value="#{railway_stations_train.id}"
+              .form-group
+                label for="position-#{railway_stations_train.id}" Позиция
+                input.form-control id="position-#{railway_stations_train.id}" placeholder="Позиция" required="" autocomplete="off" type="number" name="railway_stations_train[position]" value="#{railway_stations_train.position}" min="1"
+              .form-group
+                label for="railway-stations-time#{railway_stations_train.id}" Время
+                input.form-control id="railway-stations-time#{railway_stations_train.id}" placeholder="Время отправления" required="" autocomplete="off" type="text" name="railway_stations_train[time]" value="#{railway_stations_train.time}"
+              .btn-group
+                button.btn.btn-primary.mt-2.float-right type="submit" Сохранить
+    - if @railway_stations_train.errors.any?
+      .row
+        .col-md-6.offset-md-3
+          fieldset.p-4
+            - @railway_stations_train.errors.messages.values.flatten.each do |error|
+              small.text-danger = error

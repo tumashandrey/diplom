@@ -1,0 +1,42 @@
+- content_for :head
+  = javascript_include_tag 'trains'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Поезда
+section.section
+  .container
+    .row
+      .col-lg-12
+        div.d-flex.justify-content-end.add-btn
+          a.text-white.add-button href="#{new_admin_train_path}"
+            i.fa.fa-plus-circle Добавить поезд
+    .row
+      .col-lg-12
+        table#trains-table.table.data-table.dashboard-container
+          thead
+            tr
+              th Имя
+              th Кол-во сидячих мест
+              th Кол-во плацкарт мест
+              th  Кол-во купе мест
+              th Станции
+              th Действия
+          - @trains.each do |train|
+            tr
+              td = train.name
+              td = train.seat_capacity
+              td = train.second_place_capacity
+              td = train.coupe_capacity
+              td
+                a href="#{admin_railway_stations_path(train)}" = train.railway_stations.size
+              td
+                ul.list-inline.justify-content-center
+                  li.list-inline-item
+                    a.edit.action data-toggle="tooltip" data-placement="top" title="" href="#{edit_admin_train_path(train)}" data-original-title="Изменить"
+                      i.fa.fa-pencil
+                  li.list-inline-item
+                    a.delete.action data-toggle="tooltip" data-placement="top" title="" href="#{admin_train_path(train)}" data-original-title="Удалить" data-method="delete"
+                      i.fa.fa-trash

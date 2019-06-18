@@ -1,0 +1,36 @@
+- content_for :head
+  = javascript_include_tag 'routes'
+
+section.page-title
+  .container
+    .row
+      .col-md-8.offset-md-2.text-center
+        h3 Добавить маршрут
+section.section
+  .container
+    .row
+      .col-md-6.offset-md-3
+        = form_tag((@route.new_record? ? routes_path : route_path), method: (@route.new_record? ? 'POST' : 'PATCH')) do
+          fieldset.p-4
+            .form-group
+              label for="name" Имя
+              input.form-control#name placeholder="Имя установится автоматически" required="" type="text" name="route[title]" disabled="disabled" value="#{@route.name}"
+            .form-group
+              label for="seat_price" Стоимость сидячего места
+              input.form-control#seat_price placeholder="Стоимость сидячего места" required="" name="route[seat_price]" value="#{@route.seat_price}" type="number" min="0.1" step="0.1"
+            .form-group
+              label for="second_place_price" Стоимость места плацкарт
+              input.form-control#second_place_price placeholder="Стоимость места плацкарт" required="" name="route[second_place_price]" value="#{@route.second_place_price}" type="number" min="0.1" step="0.1"
+            .form-group
+              label for="coupe_price" Стоимость места купе
+              input.form-control#coupe_price placeholder="Стоимость места купе" required="" name="route[coupe_price]" value="#{@route.coupe_price}" type="number" min="0.1" step="0.1"
+            .form-group
+              label for="trains" Станции
+              select#trains name="train_id" placeholder="Поезд" required=""
+                - Train.all.each do |train|
+                  option value="#{train.id}" = train.stations_text
+            .form-group
+              - if @route.errors.any?
+                small.text-danger = @route.errors.messages.values.flatten.join("\n")
+            .btn-group
+              button.btn.btn-primary.mt-2.float-right type="submit" data-method="patch" = @route.new_record? ? 'Создать' : 'Изменить'

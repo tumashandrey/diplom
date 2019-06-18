@@ -1,0 +1,20 @@
+doctype html
+html
+  head
+    meta charset="UTF-8"
+    meta name="viewport" content="width=device-width, initial-scale=1"
+    title Classimax
+
+    = stylesheet_link_tag 'external', media: 'all'
+    = stylesheet_link_tag 'style.css', media: 'all'
+    = javascript_include_tag 'external'
+    = csrf_meta_tag
+    script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCcABaamniA6OL5YvYSpB3pFMNrXwXnLwU&libraries=places"
+    = yield :head
+  body class="body-wrapper"
+
+    = render 'layouts/navigation'
+    = yield
+    = render 'layouts/footer'
+    = javascript_include_tag 'script.js'
+

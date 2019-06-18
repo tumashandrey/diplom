@@ -1,0 +1,18 @@
+section.login.py-5.border-top-1
+  .container
+    .row.justify-content-center
+      .col-lg-5.col-md-8.align-item-center
+        .border
+          h3.bg-gray.p-4 Регистрация
+          form action="#{registration_path(resource_name)}" method="POST"
+            fieldset.p-4
+              input.border.p-3.w-100.my-2 placeholder="email" name="user[email]" type="email" required=''
+              input.border.p-3.w-100.my-2 placeholder="Имя" name="user[name]" type="text" required=''
+              input.border.p-3.w-100.my-2 placeholder="телефон" name="user[phone]" type="text" required='' pattern="\+\d{12}" title="формат +xxxxxxxxxxxx"
+              input.border.p-3.w-100.my-2 placeholder="пароль" type="password" name="user[password]" minlength="8" required=''
+              input.border.p-3.w-100.my-2 placeholder="повторите пароль" type="password" name="user[password_confirmation]" minlength="8" required=''
+              input type="hidden" name="authenticity_token" value="#{form_authenticity_token}"
+              - if @user.errors.any?
+                small class="text-danger"
+                  | #{@user.errors.values.join("\n")}
+              button.d-block.py-3.px-5.bg-primary.text-white.border-0.rounded.font-weight-bold.mt-3 type="submit"  Регистрация
